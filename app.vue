@@ -1,6 +1,3 @@
-
-   
-
 <template>
   <div id="app">
     <!-- Encabezado -->
@@ -10,8 +7,6 @@
     <main class="main-content">
     <p>Bienvenidos al refuerzo de Matemáticas y Pensamiento Lógico.</p>
      <NuxtPage />
-        <button class="main-button">Entrar</button>
-      
     </main>
     
     <!-- Pie de página -->

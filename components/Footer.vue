@@ -1,8 +1,8 @@
 <template>
     <footer class="footer">
       <div class="footer-content">
-        <img src="https://www.pikpng.com/pngl/b/430-4309318_university-of-crdoba-escudo-universidad-de-cordoba-clipart.png" alt="70px" class="footer-logo" />
-        <p>Universidad De Córdoba - Matemáticas - Docente: Marina Bedoya</p>
+        <img src="https://www.pikpng.com/pngl/b/430-4309318_university-of-crdoba-escudo-universidad-de-cordoba-clipart.png" alt="80px" class="footer-logo" />
+        <p>Universidad De Córdoba - Cuarto Semestre - Licenciatura en Informatica</p>
       </div>
     </footer>
   </template>

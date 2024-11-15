@@ -1,7 +1,7 @@
 <template>
     <header class="header">
       <div class="header-content">
-        <img src="https://pbs.twimg.com/profile_images/722809829048389633/bH1Tfh8B_400x400.jpg" alt="70 px" class="header-logo" />
+        <img src="https://pbs.twimg.com/profile_images/722809829048389633/bH1Tfh8B_400x400.jpg" alt="80 px" class="header-logo" />
         <h1>{{ titulo }}</h1>
       </div>
     </header>
