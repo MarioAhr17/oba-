@@ -7,6 +7,7 @@
         <v-list-item prepend-icon="mdi-view-dashboard" title="Home" to="/"></v-list-item>
         <v-list-item prepend-icon="mdi-forum" title="Objetivos" to="/objetivos"></v-list-item>
         <v-list-item prepend-icon="mdi-forum" title="Contenidos" to="/contenidos.vue"></v-list-item>
+        <v-list-item prepend-icon="mdi-forum" title="Actividades" to="/actividades"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
