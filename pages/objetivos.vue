@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 
+=======
+<!-- src/pages/ObjetivosPage.vue -->
+>>>>>>> Stashed changes
 <template>
     <div>
       <h1>Objetivos</h1>

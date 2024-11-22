@@ -103,9 +103,18 @@ export default defineNuxtPlugin((nuxtApp) => {
       store: store
     }
   }
+<<<<<<< Updated upstream
 }
 
 )
 
 
+=======
+
+
+  
+}
+
+)
+>>>>>>> Stashed changes
 
