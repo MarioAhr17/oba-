@@ -2,7 +2,8 @@
   <v-layout class="rounded rounded-md">
     <cabezote></cabezote>
 
-    <v-navigation-drawer>
+    <!-- Menú de navegación (ocultado con clase d-none) -->
+    <v-navigation-drawer class="d-none">
       <v-list density="compact" nav>
         <v-list-item prepend-icon="mdi-view-dashboard" title="Home" to="/"></v-list-item>
         <v-list-item prepend-icon="mdi-forum" title="Objetivos" to="/objetivos"></v-list-item>
@@ -11,7 +12,6 @@
       </v-list>
     </v-navigation-drawer>
 
-    
     <v-main class="d-flex align-center justify-center" style="min-height: 10px;">
       <nuxt />
     </v-main>
