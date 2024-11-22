@@ -1,22 +1,19 @@
 <template>
+
     <div>
       <v-app-bar 
-        image="https://bisuteriafina.com.mx/wp-content/uploads/bfi_thumb/BANNER-326wqm1fuvl9fv02l4yvtw19aj2b73dcu7tomfuzhfycxjx74.jpg"
+        image="https://www.ipler.edu.co/wp-content/uploads/2022/08/estudiar_matematicas-1.png"
         dark
         height="150"
       >
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
   
         <v-toolbar-title  
-        ><h1>BISUTERIA MARY</h1></v-toolbar-title>
+        ><h1>Refuerzo Matemático</h1></v-toolbar-title>
   
         <v-spacer></v-spacer>
   
-        <carrito class="mr-5"
-         :productos="productos"
-        >
-
-        </carrito>
+        
       </v-app-bar>
       
     </div>
@@ -29,5 +26,9 @@
   }
   </script>
   <style scoped>
+
+  h1{
+    text-align: left;
+  }
    
   </style>
