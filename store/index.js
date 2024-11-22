@@ -103,5 +103,9 @@ export default defineNuxtPlugin((nuxtApp) => {
       store: store
     }
   }
-})
+}
+
+)
+
+
 
