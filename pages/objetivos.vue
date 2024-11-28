@@ -9,6 +9,7 @@
         {{ objetivo }}
       </li>
     </ul>
+    <button class="back-button" @click="volverAlDashboard">Volver al inicio</button>
   </div>
 </template>
 
@@ -27,6 +28,11 @@ export default {
       ],
     };
   },
+  methods: {
+    volverAlDashboard() {
+      this.$router.push('/dashboard');
+    }
+  }
 };
 </script>
 
@@ -66,5 +72,21 @@ p {
 .objetivo-item {
   margin-bottom: 15px; /* Separación entre cada objetivo */
   line-height: 1.5;
+}
+
+.back-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #45a049;
 }
 </style>
