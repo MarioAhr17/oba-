@@ -1,118 +1,187 @@
 <template>
     <div class="activity-page">
-        <h1 class="main-title">Operaciones Básicas</h1>
-        
-        <div class="activities-container">
-            <!-- Tabla de Suma -->
-            <div class="activity-card">
-                <h3>Tabla de Suma</h3>
-                <div class="table-activity">
-                    <div class="number-select">
-                        <label>Sumar con: </label>
-                        <select v-model="selectedNumberSum" @change="generateSum">
-                            <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
-                        </select>
+        <!-- Nueva sección de introducción -->
+        <div class="intro-section" v-if="!actividadesIniciadas">
+            <h1>Operaciones Básicas</h1>
+            
+            <div class="intro-content">
+                <div class="intro-text">
+                    <p class="intro-description">
+                        Practica las operaciones matemáticas fundamentales de una manera interactiva y divertida. Mejora tu habilidad con los números a través de ejercicios de suma, resta, multiplicación y división.
+                    </p>
+                    
+                    <div class="learning-objectives">
+                        <h3>En esta sección practicarás:</h3>
+                        <ul>
+                            <li>
+                                <i class="fas fa-plus"></i>
+                                Sumas con números del 1 al 10
+                            </li>
+                            <li>
+                                <i class="fas fa-minus"></i>
+                                Restas con números hasta el 20
+                            </li>
+                            <li>
+                                <i class="fas fa-times"></i>
+                                Tablas de multiplicar hasta el 12
+                            </li>
+                            <li>
+                                <i class="fas fa-divide"></i>
+                                Divisiones básicas
+                            </li>
+                        </ul>
                     </div>
-                    <div class="exercise" v-if="!showResultSum">
-                        <p>{{ sumProblem }}</p>
-                        <input 
-                            type="number" 
-                            v-model.number="userAnswerSum" 
-                            placeholder="Tu respuesta"
-                            class="answer-input"
-                        >
-                        <button @click="checkSum" class="solve-button">Verificar</button>
-                    </div>
-                    <div v-else class="result" :class="isCorrectSum ? 'correct' : 'incorrect'">
-                        <p>{{ resultMessageSum }}</p>
-                        <button @click="nextSum" class="next-button">Siguiente</button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Tabla de Resta -->
-            <div class="activity-card">
-                <h3>Tabla de Resta</h3>
-                <div class="table-activity">
-                    <div class="number-select">
-                        <label>Restar desde: </label>
-                        <select v-model="selectedNumberRest" @change="generateRest">
-                            <option v-for="n in 20" :key="n" :value="n">{{ n }}</option>
-                        </select>
+                    <div class="activities-preview">
+                        <h3>Actividades disponibles:</h3>
+                        <div class="preview-cards">
+                            <div class="preview-card">
+                                <i class="fas fa-plus-circle"></i>
+                                <h4>Tabla de Suma</h4>
+                                <p>Practica sumas con diferentes números</p>
+                            </div>
+                            <div class="preview-card">
+                                <i class="fas fa-minus-circle"></i>
+                                <h4>Tabla de Resta</h4>
+                                <p>Mejora tu habilidad con las restas</p>
+                            </div>
+                            <div class="preview-card">
+                                <i class="fas fa-times-circle"></i>
+                                <h4>Tabla de Multiplicar</h4>
+                                <p>Aprende las tablas de multiplicar</p>
+                            </div>
+                            <div class="preview-card">
+                                <i class="fas fa-divide"></i>
+                                <h4>Tabla de División</h4>
+                                <p>Practica divisiones básicas</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="exercise" v-if="!showResultRest">
-                        <p>{{ restProblem }}</p>
-                        <input 
-                            type="number" 
-                            v-model.number="userAnswerRest" 
-                            placeholder="Tu respuesta"
-                            class="answer-input"
-                        >
-                        <button @click="checkRest" class="solve-button">Verificar</button>
-                    </div>
-                    <div v-else class="result" :class="isCorrectRest ? 'correct' : 'incorrect'">
-                        <p>{{ resultMessageRest }}</p>
-                        <button @click="nextRest" class="next-button">Siguiente</button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Tabla de Multiplicación -->
-            <div class="activity-card">
-                <h3>Tabla de Multiplicar</h3>
-                <div class="table-activity">
-                    <div class="number-select">
-                        <label>Multiplicar por: </label>
-                        <select v-model="selectedNumberMult" @change="generateMultiplication">
-                            <option v-for="n in 12" :key="n" :value="n">{{ n }}</option>
-                        </select>
-                    </div>
-                    <div class="exercise" v-if="!showResultMult">
-                        <p>{{ multiplicationProblem }}</p>
-                        <input 
-                            type="number" 
-                            v-model.number="userAnswerMult" 
-                            placeholder="Tu respuesta"
-                            class="answer-input"
-                        >
-                        <button @click="checkMultiplication" class="solve-button">Verificar</button>
-                    </div>
-                    <div v-else class="result" :class="isCorrectMult ? 'correct' : 'incorrect'">
-                        <p>{{ resultMessageMult }}</p>
-                        <button @click="nextMultiplication" class="next-button">Siguiente</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabla de División -->
-            <div class="activity-card">
-                <h3>Tabla de División</h3>
-                <div class="table-activity">
-                    <div class="number-select">
-                        <label>Dividir entre: </label>
-                        <select v-model="selectedNumberDiv" @change="generateDivision">
-                            <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
-                        </select>
-                    </div>
-                    <div class="exercise" v-if="!showResultDiv">
-                        <p>{{ divisionProblem }}</p>
-                        <input 
-                            type="number" 
-                            v-model.number="userAnswerDiv" 
-                            placeholder="Tu respuesta"
-                            class="answer-input"
-                        >
-                        <button @click="checkDivision" class="solve-button">Verificar</button>
-                    </div>
-                    <div v-else class="result" :class="isCorrectDiv ? 'correct' : 'incorrect'">
-                        <p>{{ resultMessageDiv }}</p>
-                        <button @click="nextDivision" class="next-button">Siguiente</button>
-                    </div>
+                    <button @click="comenzarActividades" class="start-activities-button">
+                        Comenzar Actividades
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
 
-        <button class="back-button" @click="volverAlDashboard">Volver al Dashboard</button>
+        <!-- Tu contenido actual de actividades -->
+        <div v-else>
+            <h1 class="main-title">Operaciones Básicas</h1>
+            
+            <div class="activities-container">
+                <!-- Tabla de Suma -->
+                <div class="activity-card">
+                    <h3>Tabla de Suma</h3>
+                    <div class="table-activity">
+                        <div class="number-select">
+                            <label>Sumar con: </label>
+                            <select v-model="selectedNumberSum" @change="generateSum">
+                                <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+                            </select>
+                        </div>
+                        <div class="exercise" v-if="!showResultSum">
+                            <p>{{ sumProblem }}</p>
+                            <input 
+                                type="number" 
+                                v-model.number="userAnswerSum" 
+                                placeholder="Tu respuesta"
+                                class="answer-input"
+                            >
+                            <button @click="checkSum" class="solve-button">Verificar</button>
+                        </div>
+                        <div v-else class="result" :class="isCorrectSum ? 'correct' : 'incorrect'">
+                            <p>{{ resultMessageSum }}</p>
+                            <button @click="nextSum" class="next-button">Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de Resta -->
+                <div class="activity-card">
+                    <h3>Tabla de Resta</h3>
+                    <div class="table-activity">
+                        <div class="number-select">
+                            <label>Restar desde: </label>
+                            <select v-model="selectedNumberRest" @change="generateRest">
+                                <option v-for="n in 20" :key="n" :value="n">{{ n }}</option>
+                            </select>
+                        </div>
+                        <div class="exercise" v-if="!showResultRest">
+                            <p>{{ restProblem }}</p>
+                            <input 
+                                type="number" 
+                                v-model.number="userAnswerRest" 
+                                placeholder="Tu respuesta"
+                                class="answer-input"
+                            >
+                            <button @click="checkRest" class="solve-button">Verificar</button>
+                        </div>
+                        <div v-else class="result" :class="isCorrectRest ? 'correct' : 'incorrect'">
+                            <p>{{ resultMessageRest }}</p>
+                            <button @click="nextRest" class="next-button">Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de Multiplicación -->
+                <div class="activity-card">
+                    <h3>Tabla de Multiplicar</h3>
+                    <div class="table-activity">
+                        <div class="number-select">
+                            <label>Multiplicar por: </label>
+                            <select v-model="selectedNumberMult" @change="generateMultiplication">
+                                <option v-for="n in 12" :key="n" :value="n">{{ n }}</option>
+                            </select>
+                        </div>
+                        <div class="exercise" v-if="!showResultMult">
+                            <p>{{ multiplicationProblem }}</p>
+                            <input 
+                                type="number" 
+                                v-model.number="userAnswerMult" 
+                                placeholder="Tu respuesta"
+                                class="answer-input"
+                            >
+                            <button @click="checkMultiplication" class="solve-button">Verificar</button>
+                        </div>
+                        <div v-else class="result" :class="isCorrectMult ? 'correct' : 'incorrect'">
+                            <p>{{ resultMessageMult }}</p>
+                            <button @click="nextMultiplication" class="next-button">Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de División -->
+                <div class="activity-card">
+                    <h3>Tabla de División</h3>
+                    <div class="table-activity">
+                        <div class="number-select">
+                            <label>Dividir entre: </label>
+                            <select v-model="selectedNumberDiv" @change="generateDivision">
+                                <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+                            </select>
+                        </div>
+                        <div class="exercise" v-if="!showResultDiv">
+                            <p>{{ divisionProblem }}</p>
+                            <input 
+                                type="number" 
+                                v-model.number="userAnswerDiv" 
+                                placeholder="Tu respuesta"
+                                class="answer-input"
+                            >
+                            <button @click="checkDivision" class="solve-button">Verificar</button>
+                        </div>
+                        <div v-else class="result" :class="isCorrectDiv ? 'correct' : 'incorrect'">
+                            <p>{{ resultMessageDiv }}</p>
+                            <button @click="nextDivision" class="next-button">Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="back-button" @click="volverAlDashboard">Volver al Dashboard</button>
+        </div>
     </div>
 </template>
 
@@ -121,6 +190,7 @@ export default {
     name: 'OperacionesPage',
     data() {
         return {
+            actividadesIniciadas: false,
             // Suma
             selectedNumberSum: 1,
             currentAddend: 1,
@@ -244,6 +314,10 @@ export default {
         },
         nextDivision() {
             this.generateDivision()
+        },
+
+        comenzarActividades() {
+            this.actividadesIniciadas = true;
         }
     },
     mounted() {
@@ -369,5 +443,118 @@ export default {
 
 .back-button:hover {
     background-color: #45a049;
+}
+
+/* Nuevos estilos para la introducción */
+.intro-section {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.intro-description {
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.learning-objectives {
+    text-align: left;
+    background: #f5f5f5;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px 0;
+}
+
+.learning-objectives h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.learning-objectives ul {
+    list-style: none;
+    padding: 0;
+}
+
+.learning-objectives li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    color: #555;
+}
+
+.learning-objectives i {
+    color: #4CAF50;
+    width: 20px;
+    text-align: center;
+}
+
+.preview-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.preview-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.preview-card i {
+    font-size: 2rem;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.preview-card h4 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.preview-card p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.start-activities-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 30px auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-activities-button:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .preview-cards {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .preview-cards {
+        grid-template-columns: 1fr;
+    }
 }
 </style> 

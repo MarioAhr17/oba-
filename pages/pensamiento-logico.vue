@@ -1,96 +1,151 @@
 <template>
     <div class="pensamiento-page">
-        <h1>Pensamiento Lógico</h1>
-        
-        <div class="content">
-            <!-- Actividad 1: Secuencias -->
-            <div class="activity-card">
-                <h2>Secuencias Numéricas</h2>
-                <div v-if="!secuenciaActiva" class="intro">
-                    <p>Descubre el patrón y encuentra el siguiente número</p>
-                    <button @click="iniciarSecuencia" class="start-button">
-                        <i class="fas fa-play"></i> Comenzar
-                    </button>
-                </div>
-                <div v-else class="activity">
-                    <div class="sequence-container">
-                        <div class="number-box" 
-                             v-for="(num, index) in secuenciaActual.numeros" 
-                             :key="index">
-                            {{ num }}
-                        </div>
-                        <div class="number-box mystery">
-                            <i class="fas fa-question"></i>
-                        </div>
+        <!-- Nueva sección de introducción -->
+        <div class="intro-section" v-if="!actividadesIniciadas">
+            <h1>Pensamiento Lógico</h1>
+            
+            <div class="intro-content">
+                <div class="intro-text">
+                    <p class="intro-description">
+                        Desarrolla tu capacidad de razonamiento lógico a través de ejercicios divertidos y desafiantes. Descubre patrones, resuelve secuencias y mejora tu pensamiento analítico.
+                    </p>
+                    
+                    <div class="learning-objectives">
+                        <h3>En esta sección aprenderás:</h3>
+                        <ul>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Identificar y completar secuencias numéricas
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Reconocer patrones visuales
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Desarrollar el pensamiento analítico
+                            </li>
+                        </ul>
                     </div>
-                    <div class="hint-text" v-if="mostrarPista">
-                        <i class="fas fa-lightbulb"></i> 
-                        Pista: {{ secuenciaActual.pista }}
-                    </div>
-                    <div class="input-container">
-                        <input 
-                            v-model.number="respuestaSecuencia" 
-                            type="number" 
-                            placeholder="¿Cuál sigue?"
-                            class="number-input"
-                        >
-                        <button @click="verificarSecuencia" class="verify-button">
-                            Verificar
-                        </button>
-                    </div>
-                    <button @click="togglePista" class="hint-button">
-                        <i class="fas fa-lightbulb"></i> 
-                        {{ mostrarPista ? 'Ocultar Pista' : 'Ver Pista' }}
-                    </button>
-                    <div v-if="mostrarResultadoSecuencia" 
-                         :class="['resultado', secuenciaCorrecta ? 'correcto' : 'incorrecto']">
-                        {{ mensajeSecuencia }}
-                    </div>
-                </div>
-            </div>
 
-            <!-- Actividad 2: Patrones Visuales -->
-            <div class="activity-card">
-                <h2>Patrones Visuales</h2>
-                <div v-if="!patronActivo" class="intro">
-                    <p>Identifica el patrón y selecciona la figura que sigue</p>
-                    <button @click="iniciarPatron" class="start-button">
-                        <i class="fas fa-play"></i> Comenzar
+                    <div class="activities-preview">
+                        <h3>Actividades disponibles:</h3>
+                        <div class="preview-cards">
+                            <div class="preview-card">
+                                <i class="fas fa-sort-numeric-up"></i>
+                                <h4>Secuencias Numéricas</h4>
+                                <p>Descubre el patrón y encuentra el siguiente número en la secuencia</p>
+                            </div>
+                            <div class="preview-card">
+                                <i class="fas fa-shapes"></i>
+                                <h4>Patrones Visuales</h4>
+                                <p>Identifica y completa patrones con figuras geométricas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button @click="comenzarActividades" class="start-activities-button">
+                        Comenzar Actividades
+                        <i class="fas fa-arrow-right"></i>
                     </button>
-                </div>
-                <div v-else class="activity">
-                    <div class="pattern-container">
-                        <div class="pattern-box" v-for="(figura, index) in patronActual.secuencia" 
-                             :key="index">
-                            <div :class="['figura', figura]"></div>
-                        </div>
-                        <div class="pattern-box mystery">
-                            <i class="fas fa-question"></i>
-                        </div>
-                    </div>
-                    <p class="instruction-text">¿Qué figura sigue?</p>
-                    <div class="options-container">
-                        <button 
-                            v-for="opcion in patronActual.opciones" 
-                            :key="opcion"
-                            @click="verificarPatron(opcion)"
-                            class="option-button"
-                        >
-                            <div :class="['figura', opcion]"></div>
-                        </button>
-                    </div>
-                    <div v-if="mostrarResultadoPatron" 
-                         :class="['resultado', patronCorrecto ? 'correcto' : 'incorrecto']">
-                        {{ mensajePatron }}
-                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="footer-section">
-            <button @click="volverDashboard" class="back-button">
-                <i class="fas fa-arrow-left"></i> Volver al Dashboard
-            </button>
+        <!-- Tu contenido actual de actividades -->
+        <div v-else>
+            <h1>Pensamiento Lógico</h1>
+            
+            <div class="content">
+                <!-- Actividad 1: Secuencias -->
+                <div class="activity-card">
+                    <h2>Secuencias Numéricas</h2>
+                    <div v-if="!secuenciaActiva" class="intro">
+                        <p>Descubre el patrón y encuentra el siguiente número</p>
+                        <button @click="iniciarSecuencia" class="start-button">
+                            <i class="fas fa-play"></i> Comenzar
+                        </button>
+                    </div>
+                    <div v-else class="activity">
+                        <div class="sequence-container">
+                            <div class="number-box" 
+                                 v-for="(num, index) in secuenciaActual.numeros" 
+                                 :key="index">
+                                {{ num }}
+                            </div>
+                            <div class="number-box mystery">
+                                <i class="fas fa-question"></i>
+                            </div>
+                        </div>
+                        <div class="hint-text" v-if="mostrarPista">
+                            <i class="fas fa-lightbulb"></i> 
+                            Pista: {{ secuenciaActual.pista }}
+                        </div>
+                        <div class="input-container">
+                            <input 
+                                v-model.number="respuestaSecuencia" 
+                                type="number" 
+                                placeholder="¿Cuál sigue?"
+                                class="number-input"
+                            >
+                            <button @click="verificarSecuencia" class="verify-button">
+                                Verificar
+                            </button>
+                        </div>
+                        <button @click="togglePista" class="hint-button">
+                            <i class="fas fa-lightbulb"></i> 
+                            {{ mostrarPista ? 'Ocultar Pista' : 'Ver Pista' }}
+                        </button>
+                        <div v-if="mostrarResultadoSecuencia" 
+                             :class="['resultado', secuenciaCorrecta ? 'correcto' : 'incorrecto']">
+                            {{ mensajeSecuencia }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividad 2: Patrones Visuales -->
+                <div class="activity-card">
+                    <h2>Patrones Visuales</h2>
+                    <div v-if="!patronActivo" class="intro">
+                        <p>Identifica el patrón y selecciona la figura que sigue</p>
+                        <button @click="iniciarPatron" class="start-button">
+                            <i class="fas fa-play"></i> Comenzar
+                        </button>
+                    </div>
+                    <div v-else class="activity">
+                        <div class="pattern-container">
+                            <div class="pattern-box" v-for="(figura, index) in patronActual.secuencia" 
+                                 :key="index">
+                                <div :class="['figura', figura]"></div>
+                            </div>
+                            <div class="pattern-box mystery">
+                                <i class="fas fa-question"></i>
+                            </div>
+                        </div>
+                        <p class="instruction-text">¿Qué figura sigue?</p>
+                        <div class="options-container">
+                            <button 
+                                v-for="opcion in patronActual.opciones" 
+                                :key="opcion"
+                                @click="verificarPatron(opcion)"
+                                class="option-button"
+                            >
+                                <div :class="['figura', opcion]"></div>
+                            </button>
+                        </div>
+                        <div v-if="mostrarResultadoPatron" 
+                             :class="['resultado', patronCorrecto ? 'correcto' : 'incorrecto']">
+                            {{ mensajePatron }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <button @click="volverDashboard" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -100,6 +155,7 @@ export default {
     name: 'PensamientoLogicoPage',
     data() {
         return {
+            actividadesIniciadas: false,
             secuenciaActiva: false,
             secuencias: [
                 {
@@ -220,6 +276,9 @@ export default {
                     this.nuevoPatron()
                 }, 2000)
             }
+        },
+        comenzarActividades() {
+            this.actividadesIniciadas = true;
         }
     }
 }
@@ -486,6 +545,111 @@ h1 {
         width: 50px;
         height: 50px;
         font-size: 1.3rem;
+    }
+}
+
+/* Nuevos estilos para la introducción */
+.intro-section {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.intro-description {
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.learning-objectives {
+    text-align: left;
+    background: #f5f5f5;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px 0;
+}
+
+.learning-objectives h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.learning-objectives ul {
+    list-style: none;
+    padding: 0;
+}
+
+.learning-objectives li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    color: #555;
+}
+
+.learning-objectives i {
+    color: #4CAF50;
+}
+
+.preview-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.preview-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.preview-card i {
+    font-size: 2rem;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.preview-card h4 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.preview-card p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.start-activities-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 30px auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-activities-button:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .preview-cards {
+        grid-template-columns: 1fr;
     }
 }
 </style> 
