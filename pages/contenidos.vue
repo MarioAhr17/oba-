@@ -29,11 +29,6 @@
 
                       <li>Conceptos básicos, representación y operaciones simples</li>
                       <li>Ejemplos cotidianos</li>
-                  </ul><h3 class="topic-title">Pensamiento Lógico</h3>
-                  <ul class="topic-list">
-
-                      <li>Patrones, secuencias, y razonamiento lógico.</li>
-                      <li>Juegos y acertijos.</li>
                   </ul>
               </div>
           </div>
