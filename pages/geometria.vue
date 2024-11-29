@@ -1,58 +1,113 @@
 <template>
     <div class="geometria-page">
-        <h1>Geometría Básica</h1>
-        
-        <!-- Actividad 1: Identificación de Figuras -->
-        <div class="content">
-            <div class="activity-card">
-                <h2>Identificación de Figuras</h2>
-                <div v-if="!identificacionActiva" class="intro">
-                    <p>Aprende a reconocer diferentes figuras geométricas.</p>
-                    <button @click="iniciarIdentificacion" class="start-button">Comenzar</button>
-                </div>
-                <div v-else class="activity">
-                    <div class="shape" :class="figuraActual.clase"></div>
-                    <p>¿Qué figura es esta?</p>
-                    <div class="options">
-                        <button 
-                            v-for="opcion in opciones" 
-                            :key="opcion"
-                            @click="verificarRespuesta(opcion)"
-                            class="option-button"
-                        >
-                            {{ opcion }}
-                        </button>
+        <!-- Sección de introducción -->
+        <div class="intro-section" v-if="!actividadesIniciadas">
+            <h1>Geometría Básica</h1>
+            
+            <div class="intro-content">
+                <div class="intro-text">
+                    <p class="intro-description">
+                        Bienvenido al mundo de la geometría. Aquí aprenderás sobre las formas y figuras que nos rodean en la vida diaria.
+                    </p>
+                    
+                    <div class="learning-objectives">
+                        <h3>En esta sección aprenderás:</h3>
+                        <ul>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Identificar diferentes figuras geométricas
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Calcular perímetros de figuras básicas
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Aplicar conceptos geométricos en situaciones reales
+                            </li>
+                        </ul>
                     </div>
-                    <div v-if="mostrarResultado" :class="['resultado', respuestaCorrecta ? 'correcto' : 'incorrecto']">
-                        {{ mensajeResultado }}
-                    </div>
-                </div>
-            </div>
 
-            <!-- Actividad 2: Cálculo de Perímetros -->
-            <div class="activity-card">
-                <h2>Cálculo de Perímetros</h2>
-                <div v-if="!perimetroActivo" class="intro">
-                    <p>Practica el cálculo de perímetros de diferentes figuras.</p>
-                    <button @click="iniciarPerimetro" class="start-button">Comenzar</button>
-                </div>
-                <div v-else class="activity">
-                    <div class="figura-container">
-                        <div class="rectangulo">
-                            <span class="medida-ancho">{{ ancho }}cm</span>
-                            <span class="medida-alto">{{ alto }}cm</span>
+                    <div class="activities-preview">
+                        <h3>Actividades disponibles:</h3>
+                        <div class="preview-cards">
+                            <div class="preview-card">
+                                <i class="fas fa-shapes"></i>
+                                <h4>Identificación de Figuras</h4>
+                                <p>Aprende a reconocer diferentes formas geométricas</p>
+                            </div>
+                            <div class="preview-card">
+                                <i class="fas fa-ruler-combined"></i>
+                                <h4>Cálculo de Perímetros</h4>
+                                <p>Practica midiendo el contorno de las figuras</p>
+                            </div>
                         </div>
                     </div>
-                    <p>Calcula el perímetro del rectángulo</p>
-                    <input 
-                        v-model.number="respuestaPerimetro" 
-                        type="number" 
-                        placeholder="Ingresa el perímetro"
-                        class="input-respuesta"
-                    >
-                    <button @click="verificarPerimetro" class="verify-button">Verificar</button>
-                    <div v-if="mostrarResultadoPerimetro" :class="['resultado', perimetroCorrecto ? 'correcto' : 'incorrecto']">
-                        {{ mensajePerimetro }}
+
+                    <button @click="comenzarActividades" class="start-activities-button">
+                        Comenzar Actividades
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido original de las actividades -->
+        <div v-else>
+            <h1>Geometría Básica</h1>
+            
+            <!-- Actividad 1: Identificación de Figuras -->
+            <div class="content">
+                <div class="activity-card">
+                    <h2>Identificación de Figuras</h2>
+                    <div v-if="!identificacionActiva" class="intro">
+                        <p>Aprende a reconocer diferentes figuras geométricas.</p>
+                        <button @click="iniciarIdentificacion" class="start-button">Comenzar</button>
+                    </div>
+                    <div v-else class="activity">
+                        <div class="shape" :class="figuraActual.clase"></div>
+                        <p>¿Qué figura es esta?</p>
+                        <div class="options">
+                            <button 
+                                v-for="opcion in opciones" 
+                                :key="opcion"
+                                @click="verificarRespuesta(opcion)"
+                                class="option-button"
+                            >
+                                {{ opcion }}
+                            </button>
+                        </div>
+                        <div v-if="mostrarResultado" :class="['resultado', respuestaCorrecta ? 'correcto' : 'incorrecto']">
+                            {{ mensajeResultado }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividad 2: Cálculo de Perímetros -->
+                <div class="activity-card">
+                    <h2>Cálculo de Perímetros</h2>
+                    <div v-if="!perimetroActivo" class="intro">
+                        <p>Practica el cálculo de perímetros de diferentes figuras.</p>
+                        <button @click="iniciarPerimetro" class="start-button">Comenzar</button>
+                    </div>
+                    <div v-else class="activity">
+                        <div class="figura-container">
+                            <div class="rectangulo">
+                                <span class="medida-ancho">{{ ancho }}cm</span>
+                                <span class="medida-alto">{{ alto }}cm</span>
+                            </div>
+                        </div>
+                        <p>Calcula el perímetro del rectángulo</p>
+                        <input 
+                            v-model.number="respuestaPerimetro" 
+                            type="number" 
+                            placeholder="Ingresa el perímetro"
+                            class="input-respuesta"
+                        >
+                        <button @click="verificarPerimetro" class="verify-button">Verificar</button>
+                        <div v-if="mostrarResultadoPerimetro" :class="['resultado', perimetroCorrecto ? 'correcto' : 'incorrecto']">
+                            {{ mensajePerimetro }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,6 +127,7 @@ export default {
     name: 'GeometriaPage',
     data() {
         return {
+            actividadesIniciadas: false,
             // Datos para identificación de figuras
             identificacionActiva: false,
             figuras: [
@@ -99,6 +155,9 @@ export default {
     methods: {
         volverDashboard() {
             this.$router.push('/dashboard')
+        },
+        comenzarActividades() {
+            this.actividadesIniciadas = true;
         },
         iniciarIdentificacion() {
             this.identificacionActiva = true
@@ -316,5 +375,117 @@ h1 {
 .footer-section {
     margin-top: 30px;
     text-align: center;
+}
+
+/* Nuevos estilos para la introducción */
+.intro-section {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.intro-description {
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.learning-objectives {
+    text-align: left;
+    background: #f5f5f5;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px 0;
+}
+
+.learning-objectives h3 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.learning-objectives ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.learning-objectives li {
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.learning-objectives i {
+    color: #4CAF50;
+    margin-right: 5px;
+}
+
+.activities-preview {
+    text-align: left;
+    background: #f5f5f5;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px 0;
+}
+
+.activities-preview h3 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.preview-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.preview-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.preview-card i {
+    font-size: 2rem;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.preview-card h4 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.preview-card p {
+    color: #666;
+    font-size: 1rem;
+}
+
+.start-activities-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.start-activities-button:hover {
+    background: #45a049;
 }
 </style> 
