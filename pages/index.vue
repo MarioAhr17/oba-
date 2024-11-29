@@ -36,14 +36,6 @@
           </v-col>
         </v-row>
       </v-card-text> 
-      <iframe
-      class="video-player"
-      src="https://www.youtube.com/watch?v=DLwMMeSh67k&t=264s" 
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-    ></iframe>
-    
       <v-divider class="my-4"></v-divider>
 
       <v-card-actions class="d-flex justify-center">
@@ -99,12 +91,5 @@ export default {
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Sombra más intensa al hover */
 }
 
-.video-player {
-  width: 100%;
-  max-width: 800px;
-  margin: 20px auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
 
 </style>
