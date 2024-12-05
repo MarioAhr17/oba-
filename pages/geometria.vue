@@ -116,7 +116,7 @@
         <!-- Botón de volver al final -->
         <div class="footer-section">
             <button @click="volverDashboard" class="back-button">
-                <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                <i class="fas fa-arrow-left"></i> Volver al inicio
             </button>
         </div>
     </div>
@@ -219,21 +219,18 @@ export default {
 }
 
 .back-button {
-    background: #4CAF50;
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 12px 24px;
     border-radius: 4px;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 1rem;
-    transition: background-color 0.3s;
 }
 
 .back-button:hover {
-    background: #45a049;
+    background-color: #45a049;
 }
 
 h1 {
@@ -470,22 +467,19 @@ h1 {
 }
 
 .start-activities-button {
-    background: #4CAF50;
+    display: block;
+    margin: auto;
+    padding: 10px 20px;
+    background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 12px 24px;
     border-radius: 4px;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     font-size: 1rem;
-    transition: background-color 0.3s;
-    width: 100%;
-    margin-top: 30px;
+    width: auto; /* Eliminar el width: 100% anterior */
 }
 
 .start-activities-button:hover {
-    background: #45a049;
+    background-color: #45a049;
 }
 </style> 

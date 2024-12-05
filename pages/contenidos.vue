@@ -34,7 +34,7 @@
           </div>
       </div>
 
-      <button class="back-button" @click="volverAlIndex">Volver al Dashboard</button>
+      <button class="back-button" @click="volverAlIndex">Volver al inicio</button>
   </div>
 </template>
 

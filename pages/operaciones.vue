@@ -62,6 +62,7 @@
                         Comenzar Actividades
                         <i class="fas fa-arrow-right"></i>
                     </button>
+                    <button class="back-button" @click="volverAlDashboard">Volver al inicio</button>
                 </div>
             </div>
         </div>
@@ -180,7 +181,7 @@
                 </div>
             </div>
 
-            <button class="back-button" @click="volverAlDashboard">Volver al Dashboard</button>
+            <button class="back-button" @click="volverAlDashboard">Volver al inicio</button>
         </div>
     </div>
 </template>
@@ -394,8 +395,8 @@ export default {
 }
 
 .solve-button, .next-button {
-    width: 100%;
-    padding: 8px 16px;
+    margin: 20px auto;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -527,23 +528,20 @@ export default {
 }
 
 .start-activities-button {
-    background: #4CAF50;
+    display: block;  /* Cambiado de inline-flex a block */
+    margin: 20px auto;  /* Ajustado el margen para coincidir con back-button */
+    padding: 10px 20px;  /* Ajustado el padding para coincidir con back-button */
+    background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin: 30px auto;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    font-size: 1rem;  /* Ajustado el tamaño de fuente */
 }
 
 .start-activities-button:hover {
-    background: #45a049;
-    transform: translateY(-2px);
+    background-color: #45a049;
+    transform: none;  /* Eliminado el efecto de transformación */
 }
 
 @media (max-width: 768px) {

@@ -49,6 +49,10 @@
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
+                        <!-- Agregar el botón de volver al inicio -->
+        <button @click="volverDashboard" class="back-button">
+            <i class="fas fa-arrow-left"></i> Volver al inicio
+        </button>
             </div>
         </div>
 

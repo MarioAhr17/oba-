@@ -54,7 +54,7 @@ body {
   padding: 10px 20px;
   font-size: 1rem;
   background-color: #007bff;
-  color: #fff;
+  color: #fff5bc;
   border: none;
   border-radius: 5px;
   cursor: pointer;
