@@ -9,6 +9,13 @@
               <p class="hero-subtitle">
                   Aprende y practica matemáticas de una manera divertida y efectiva
               </p>
+              
+              <div class="project-info">
+                <p> Materia: Matematicas</p>
+                  <p><strong>Docente:</strong> Marina Bedoya</p>
+                  <p><strong>Integrantes:</strong> Mario Hernandez, Moises Bedoya, Luis Gonzalez </p>
+              </div>
+
               <button @click="comenzar" class="cta-button">
                   Comenzar Aventura
                   <i class="fas fa-rocket"></i>
@@ -100,7 +107,7 @@ export default {
 
 .hero-content {
   flex: 1;
-  color: white;
+  color: white; 
   max-width: 600px;
 }
 
@@ -322,5 +329,23 @@ export default {
   100% {
     transform: translateY(0px);
   }
+}
+
+.project-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.project-info h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.project-info p {
+    margin: 5px 0;
+    font-size: 1.1rem;
 }
 </style>
