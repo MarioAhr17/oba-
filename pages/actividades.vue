@@ -1,142 +1,197 @@
 <template>
   <v-container>
-    <v-card class="pa-6 rounded-lg elevation-3" style="background-color: #f8f9fa">
-      <v-card-title class="text-h4 text-center mb-4" style="color: #6c63ff">
-        <v-icon large color="primary" class="mr-2">mdi-school</v-icon>
-        ¡Aventura Matemática!
-      </v-card-title>
-      
-      <v-card-subtitle class="text-center text-h6 mb-4" style="color: #4caf50">
-        ¡Demuestra tus habilidades matemáticas y diviértete aprendiendo!
-      </v-card-subtitle>
+    <!-- Selección de categoría -->
+    <template v-if="!categorySelected">
+      <v-card class="pa-6 rounded-lg elevation-3">
+        <v-card-title class="text-h4 text-center primary--text mb-6">
+          <v-icon large color="primary" class="mr-2">mdi-brain</v-icon>
+          Desafío Matemático
+        </v-card-title>
 
-      <v-divider class="my-4"></v-divider>
+        <v-row>
+          <v-col cols="12" md="4" v-for="(category, index) in categories" :key="index">
+            <v-card
+              class="pa-4 text-center category-card"
+              elevation="2"
+              @click="selectCategory(index)"
+              hover
+            >
+              <v-icon size="48" :color="category.color" class="mb-3">{{ category.icon }}</v-icon>
+              <h3 class="text-h5 mb-2">{{ category.name }}</h3>
+              <p class="mb-0">{{ category.description }}</p>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card>
+    </template>
 
-      <!-- Mostrar preguntas dinámicamente -->
-      <template v-if="!isQuizFinished">
-        <v-card outlined class="mb-4 rounded-lg elevation-2" style="background-color: white">
-          <v-card-title class="text-h5 py-4" style="background-color: #e3f2fd">
-            <v-icon color="primary" class="mr-2">mdi-help-circle</v-icon>
-            Pregunta {{ currentQuestion + 1 }} de {{ questions.length }}
+    <!-- Quiz en progreso -->
+    <template v-else-if="!isQuizFinished">
+      <v-card class="pa-6 rounded-lg elevation-3">
+        <v-card-title class="text-h4 text-center mb-4" :class="`${categories[selectedCategory].color}--text`">
+          {{ categories[selectedCategory].name }}
+        </v-card-title>
+
+        <v-progress-linear
+          :value="(currentQuestion + 1) / currentQuestions.length * 100"
+          height="10"
+          rounded
+          :color="categories[selectedCategory].color"
+          class="mb-6"
+        ></v-progress-linear>
+
+        <v-card outlined class="mb-4 rounded-lg elevation-1">
+          <v-card-title class="text-h6 pa-4">
+            Pregunta {{ currentQuestion + 1 }} de {{ currentQuestions.length }}: {{ currentQuestions[currentQuestion].text }}
           </v-card-title>
-          
-          <v-card-text class="pa-4">
-            <div class="text-h6 mb-4" style="color: #333">
-              {{ questions[currentQuestion].text }}
-            </div>
+
+          <v-card-text>
             <v-row class="mt-3">
               <v-col
-                v-for="(option, index) in questions[currentQuestion].options"
+                v-for="(option, index) in currentQuestions[currentQuestion].options"
                 :key="index"
                 cols="12"
-                md="4"
+                sm="6"
               >
                 <v-btn
                   block
-                  x-large
                   :color="option.color"
-                  class="py-4 rounded-lg elevation-2 white--text"
-                  style="font-size: 1.1rem"
-                  @click="selectAnswer(currentQuestion, option.value)"
-                  :disabled="feedback[currentQuestion] !== null"
+                  class="pa-4 white--text"
+                  :disabled="answered"
+                  @click="selectAnswer(option)"
+                  elevation="2"
                 >
-                  <v-icon left>{{ option.icon }}</v-icon>
                   {{ option.text }}
                 </v-btn>
               </v-col>
             </v-row>
-            
+
             <v-alert
-              v-if="feedback[currentQuestion] !== null"
-              :type="feedback[currentQuestion] ? 'success' : 'error'"
-              class="mt-4 rounded-lg"
+              v-if="answered"
+              :type="isCorrect ? 'success' : 'error'"
+              class="mt-4"
               dense
             >
-              <div class="text-h6">{{ feedbackMessages[currentQuestion] }}</div>
-              <div v-if="!feedback[currentQuestion]" class="mt-2">
-                ¡No te preocupes! Sigue intentando
-                <v-icon>mdi-heart</v-icon>
+              {{ feedbackMessage }}
+              <div v-if="currentQuestions[currentQuestion].explanation" class="mt-2">
+                {{ currentQuestions[currentQuestion].explanation }}
               </div>
             </v-alert>
           </v-card-text>
         </v-card>
 
-        <!-- Navegación entre preguntas -->
-        <v-row justify="space-between" class="mt-6">
-          <v-btn 
-            @click="prevQuestion" 
-            :disabled="currentQuestion === 0" 
-            color="secondary"
-            class="px-6 rounded-lg"
+        <v-row justify="space-between">
+          <v-btn
+            :disabled="currentQuestion === 0"
+            @click="prevQuestion"
+            :color="categories[selectedCategory].color"
+            outlined
           >
             <v-icon left>mdi-arrow-left</v-icon>
             Anterior
           </v-btn>
-          
-          <v-btn 
-            @click="nextQuestion" 
-            :disabled="feedback[currentQuestion] === null || currentQuestion === questions.length - 1" 
-            color="primary"
-            class="px-6 rounded-lg"
+
+          <v-btn
+            v-if="currentQuestion < currentQuestions.length - 1"
+            :disabled="!answered"
+            @click="nextQuestion"
+            :color="categories[selectedCategory].color"
           >
             Siguiente
             <v-icon right>mdi-arrow-right</v-icon>
           </v-btn>
-          
-          <v-btn 
-            v-if="currentQuestion === questions.length - 1" 
-            @click="finishQuiz" 
+
+          <v-btn
+            v-else
+            :disabled="!answered"
+            @click="finishQuiz"
             color="success"
-            class="px-6 rounded-lg"
           >
-            <v-icon left>mdi-check-circle</v-icon>
-            ¡Terminar!
+            Finalizar
+            <v-icon right>mdi-check-circle</v-icon>
           </v-btn>
         </v-row>
-      </template>
+      </v-card>
+    </template>
 
-      <!-- Mostrar resultados -->
-      <template v-else>
-        <v-card class="pa-6 text-center" style="background-color: white">
-          <v-icon color="success" size="64" class="mb-4">mdi-trophy</v-icon>
-          <h2 class="text-h4 text-success mb-4">¡Felicitaciones!</h2>
-          
-          <v-card class="mb-4 pa-4" outlined>
-            <div class="text-h6 mb-2">Tus Resultados:</div>
-            <v-row justify="center" class="mt-2">
-              <v-col cols="12" sm="4">
-                <div class="success--text text-h5">
-                  <v-icon color="success">mdi-check</v-icon>
-                  {{ score }} Correctas
-                </div>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <div class="error--text text-h5">
-                  <v-icon color="error">mdi-close</v-icon>
-                  {{ questions.length - score }} Incorrectas
-                </div>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <div class="primary--text text-h5">
-                  <v-icon color="primary">mdi-star</v-icon>
-                  Nota: {{ grade }}/5
-                </div>
-              </v-col>
-            </v-row>
-          </v-card>
+    <!-- Resultados -->
+    <template v-else>
+      <v-card class="pa-6 rounded-lg elevation-3">
+        <v-card-title class="text-h4 text-center success--text mb-6">
+          <v-icon large color="success" class="mr-2">mdi-trophy</v-icon>
+          ¡Felicitaciones!
+        </v-card-title>
 
-          <v-btn 
-            color="primary" 
-            class="mt-4 px-6" 
-            x-large
+        <v-card class="mb-6 pa-4" outlined>
+          <v-row justify="center">
+            <v-col cols="12" md="4" class="text-center">
+              <div class="text-h6 success--text">
+                <v-icon color="success">mdi-check-circle</v-icon>
+                {{ score }} Correctas
+              </div>
+            </v-col>
+            <v-col cols="12" md="4" class="text-center">
+              <div class="text-h6 error--text">
+                <v-icon color="error">mdi-close-circle</v-icon>
+                {{ currentQuestions.length - score }} Incorrectas
+              </div>
+            </v-col>
+            <v-col cols="12" md="4" class="text-center">
+              <div class="text-h6 primary--text">
+                <v-icon color="primary">mdi-star</v-icon>
+                Nota: {{ grade }}/5
+              </div>
+            </v-col>
+          </v-row>
+        </v-card>
+
+        <v-card outlined>
+          <v-list>
+            <v-list-item
+              v-for="(answer, index) in answers"
+              :key="index"
+              :class="answer.correct ? 'success--text' : 'error--text'"
+            >
+              <v-list-item-content>
+                <v-list-item-title>
+                  <v-icon :color="answer.correct ? 'success' : 'error'" class="mr-2">
+                    {{ answer.correct ? 'mdi-check-circle' : 'mdi-close-circle' }}
+                  </v-icon>
+                  Pregunta {{ index + 1 }}
+                </v-list-item-title>
+                <v-list-item-subtitle class="mt-2">
+                  {{ currentQuestions[index].text }}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle class="mt-1">
+                  <strong>Tu respuesta:</strong> {{ answer.selected }}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle v-if="!answer.correct" class="mt-1">
+                  <strong>Respuesta correcta:</strong> {{ answer.correct_answer }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+
+        <v-row justify="center" class="mt-6">
+          <v-btn
+            color="primary"
+            class="mr-4"
+            @click="resetCategory"
+          >
+            <v-icon left>mdi-format-list-bulleted</v-icon>
+            Elegir otra categoría
+          </v-btn>
+          <v-btn
+            :color="categories[selectedCategory].color"
             @click="resetQuiz"
           >
             <v-icon left>mdi-refresh</v-icon>
-            ¡Jugar de nuevo!
+            Intentar de nuevo
           </v-btn>
-        </v-card>
-      </template>
-    </v-card>
+        </v-row>
+      </v-card>
+    </template>
   </v-container>
 </template>
 
@@ -144,149 +199,245 @@
 export default {
   data() {
     return {
+      categorySelected: false,
+      selectedCategory: null,
       currentQuestion: 0,
       score: 0,
       grade: 0,
       isQuizFinished: false,
-      userAnswers: [],
-      feedback: [],
-      feedbackMessages: [],
-      questions: [
+      answered: false,
+      isCorrect: false,
+      feedbackMessage: '',
+      answers: [],
+      categories: [
         {
-          text: "Juan tiene una pizza y la comparte con sus amigos. Si la corta en 8 pedazos iguales y se come 3, ¿cuántos pedazos quedan?",
-          options: [
-            { text: "5 pedazos", value: true, color: "#FF7043", icon: "mdi-pizza" },
-            { text: "3 pedazos", value: false, color: "#FF7043", icon: "mdi-pizza" },
-            { text: "4 pedazos", value: false, color: "#FF7043", icon: "mdi-pizza" },
-          ],
+          name: "Operaciones Básicas",
+          description: "Suma, resta, multiplicación y división",
+          icon: "mdi-calculator",
+          color: "primary"
         },
         {
-          text: "Si tienes 10 dulces y tu mejor amigo te regala 5 más, ¿cuántos dulces tienes ahora?",
-          options: [
-            { text: "15 dulces", value: true, color: "#EC407A", icon: "mdi-candy" },
-            { text: "10 dulces", value: false, color: "#EC407A", icon: "mdi-candy" },
-            { text: "5 dulces", value: false, color: "#EC407A", icon: "mdi-candy" },
-          ],
+          name: "Fracciones",
+          description: "Identificación y comparación de fracciones",
+          icon: "mdi-chart-pie",
+          color: "success"
         },
         {
-          text: "En una fiesta hay 4 grupos de 3 globos cada uno. ¿Cuántos globos hay en total?",
-          options: [
-            { text: "12 globos", value: true, color: "#7E57C2", icon: "mdi-balloon" },
-            { text: "7 globos", value: false, color: "#7E57C2", icon: "mdi-balloon" },
-            { text: "10 globos", value: false, color: "#7E57C2", icon: "mdi-balloon" },
-          ],
-        },
-        {
-          text: "Si corres 2 vueltas al parque cada día, ¿cuántas vueltas darás en 5 días?",
-          options: [
-            { text: "10 vueltas", value: true, color: "#42A5F5", icon: "mdi-run" },
-            { text: "8 vueltas", value: false, color: "#42A5F5", icon: "mdi-run" },
-            { text: "12 vueltas", value: false, color: "#42A5F5", icon: "mdi-run" },
-          ],
-        },
-        {
-          text: "María tiene 15 manzanas y quiere repartirlas entre 3 amigos por igual. ¿Cuántas manzanas recibirá cada amigo?",
-          options: [
-            { text: "5 manzanas", value: true, color: "#66BB6A", icon: "mdi-fruit-apple" },
-            { text: "4 manzanas", value: false, color: "#66BB6A", icon: "mdi-fruit-apple" },
-            { text: "6 manzanas", value: false, color: "#66BB6A", icon: "mdi-fruit-apple" },
-          ],
-        },
-        {
-          text: "Si pintas 3 dibujos cada hora, ¿cuántos dibujos pintarás en 4 horas?",
-          options: [
-            { text: "12 dibujos", value: true, color: "#FFA726", icon: "mdi-palette" },
-            { text: "7 dibujos", value: false, color: "#FFA726", icon: "mdi-palette" },
-            { text: "9 dibujos", value: false, color: "#FFA726", icon: "mdi-palette" },
-          ],
-        },
-        {
-          text: "Un carro tiene 4 ruedas. ¿Cuántas ruedas tienen 3 carros juntos?",
-          options: [
-            { text: "12 ruedas", value: true, color: "#26A69A", icon: "mdi-car" },
-            { text: "9 ruedas", value: false, color: "#26A69A", icon: "mdi-car" },
-            { text: "15 ruedas", value: false, color: "#26A69A", icon: "mdi-car" },
-          ],
-        },
-        {
-          text: "En el circo hay 8 payasos. Si cada payaso tiene 2 globos, ¿cuántos globos hay en total?",
-          options: [
-            { text: "16 globos", value: true, color: "#AB47BC", icon: "mdi-party-popper" },
-            { text: "10 globos", value: false, color: "#AB47BC", icon: "mdi-party-popper" },
-            { text: "14 globos", value: false, color: "#AB47BC", icon: "mdi-party-popper" },
-          ],
-        },
-        {
-          text: "Si nadas 2 vueltas a la piscina por la mañana y 3 por la tarde, ¿cuántas vueltas nadas en total?",
-          options: [
-            { text: "5 vueltas", value: true, color: "#29B6F6", icon: "mdi-swim" },
-            { text: "6 vueltas", value: false, color: "#29B6F6", icon: "mdi-swim" },
-            { text: "4 vueltas", value: false, color: "#29B6F6", icon: "mdi-swim" },
-          ],
-        },
-        {
-          text: "Tienes 20 minutos para jugar y cada partida dura 5 minutos. ¿Cuántas partidas puedes jugar?",
-          options: [
-            { text: "4 partidas", value: true, color: "#EF5350", icon: "mdi-gamepad-variant" },
-            { text: "5 partidas", value: false, color: "#EF5350", icon: "mdi-gamepad-variant" },
-            { text: "3 partidas", value: false, color: "#EF5350", icon: "mdi-gamepad-variant" },
-          ],
+          name: "Pensamiento Lógico",
+          description: "Ejercicios de razonamiento",
+          icon: "mdi-brain",
+          color: "purple"
         }
       ],
+      questionsByCategory: {
+        0: [ // Operaciones Básicas
+          {
+            text: "¿Cuánto es 235 + 167?",
+            options: [
+              { text: "402", value: true, color: "primary" },
+              { text: "392", value: false, color: "primary" },
+              { text: "412", value: false, color: "primary" }
+            ],
+            explanation: "235 + 167 = 402"
+          },
+          {
+            text: "Si tienes 528 y restas 239, ¿cuánto queda?",
+            options: [
+              { text: "289", value: true, color: "primary" },
+              { text: "279", value: false, color: "primary" },
+              { text: "299", value: false, color: "primary" }
+            ],
+            explanation: "528 - 239 = 289"
+          },
+          {
+            text: "¿Cuánto es 12 × 15?",
+            options: [
+              { text: "180", value: true, color: "primary" },
+              { text: "170", value: false, color: "primary" },
+              { text: "190", value: false, color: "primary" }
+            ],
+            explanation: "12 × 15 = 180"
+          },
+          {
+            text: "¿Cuál es el resultado de 144 ÷ 12?",
+            options: [
+              { text: "12", value: true, color: "primary" },
+              { text: "14", value: false, color: "primary" },
+              { text: "10", value: false, color: "primary" }
+            ],
+            explanation: "144 ÷ 12 = 12"
+          },
+          {
+            text: "¿Cuánto es 456 + 789?",
+            options: [
+              { text: "1,245", value: true, color: "primary" },
+              { text: "1,235", value: false, color: "primary" },
+              { text: "1,255", value: false, color: "primary" }
+            ],
+            explanation: "456 + 789 = 1,245"
+          }
+        ],
+        1: [ // Fracciones
+          {
+            text: "¿Qué fracción es mayor: 3/4 o 2/3?",
+            options: [
+              { text: "3/4", value: true, color: "success" },
+              { text: "2/3", value: false, color: "success" },
+              { text: "Son iguales", value: false, color: "success" }
+            ],
+            explanation: "3/4 = 0.75 y 2/3 = 0.666... Por lo tanto, 3/4 es mayor"
+          },
+          {
+            text: "Si tienes 1/2 de una pizza y comes 1/4, ¿cuánto queda?",
+            options: [
+              { text: "1/4", value: true, color: "success" },
+              { text: "1/3", value: false, color: "success" },
+              { text: "2/4", value: false, color: "success" }
+            ],
+            explanation: "1/2 - 1/4 = 1/4"
+          },
+          {
+            text: "¿Cuál es el resultado de 1/3 + 1/6?",
+            options: [
+              { text: "1/2", value: true, color: "success" },
+              { text: "2/6", value: false, color: "success" },
+              { text: "2/3", value: false, color: "success" }
+            ],
+            explanation: "1/3 + 1/6 = 3/6 + 1/6 = 4/6 = 1/2"
+          },
+          {
+            text: "¿Qué fracción representa 50%?",
+            options: [
+              { text: "1/2", value: true, color: "success" },
+              { text: "1/4", value: false, color: "success" },
+              { text: "2/3", value: false, color: "success" }
+            ],
+            explanation: "50% = 50/100 = 1/2"
+          }
+        ],
+        2: [ // Pensamiento Lógico
+          {
+            text: "Si un tren viaja a 60 km/h, ¿cuánto recorrerá en 2.5 horas?",
+            options: [
+              { text: "150 km", value: true, color: "purple" },
+              { text: "140 km", value: false, color: "purple" },
+              { text: "160 km", value: false, color: "purple" }
+            ],
+            explanation: "60 km/h × 2.5 h = 150 km"
+          },
+          {
+            text: "Si 3 lápices cuestan $9, ¿cuánto cuestan 7 lápices?",
+            options: [
+              { text: "$21", value: true, color: "purple" },
+              { text: "$18", value: false, color: "purple" },
+              { text: "$24", value: false, color: "purple" }
+            ],
+            explanation: "Si 3 lápices = $9, entonces 1 lápiz = $3. Por lo tanto, 7 lápices = $21"
+          },
+          {
+            text: "Juan tiene el doble de la edad de María. Si María tiene 15 años, ¿cuántos años tendrá Juan en 5 años?",
+            options: [
+              { text: "35 años", value: true, color: "purple" },
+              { text: "30 años", value: false, color: "purple" },
+              { text: "40 años", value: false, color: "purple" }
+            ],
+            explanation: "Juan tiene 30 años (doble de 15). En 5 años tendrá 35 años"
+          },
+          {
+            text: "En una biblioteca, 1/3 de los libros son de historia, 1/4 son de ciencia y el resto son de literatura. ¿Qué fracción son los libros de literatura?",
+            options: [
+              { text: "5/12", value: true, color: "purple" },
+              { text: "1/2", value: false, color: "purple" },
+              { text: "7/12", value: false, color: "purple" }
+            ],
+            explanation: "1/3 + 1/4 = 4/12 + 3/12 = 7/12. Por lo tanto, queda 5/12 para literatura"
+          }
+        ]
+      }
     };
   },
+  computed: {
+    currentQuestions() {
+      return this.questionsByCategory[this.selectedCategory] || [];
+    }
+  },
   methods: {
-    selectAnswer(questionIndex, value) {
-      const selectedOption = this.questions[questionIndex].options.find((opt) => opt.value === value);
-      this.userAnswers[questionIndex] = selectedOption;
-      this.feedback[questionIndex] = value;
-      this.feedbackMessages[questionIndex] = value
-        ? "¡Correcto! ¡Muy bien hecho!"
-        : `No es correcto. La respuesta correcta es ${this.questions[questionIndex].options.find((opt) => opt.value).text}`;
-      if (value) this.score++;
+    selectCategory(index) {
+      this.selectedCategory = index;
+      this.categorySelected = true;
+      this.resetQuiz();
+    },
+    selectAnswer(option) {
+      if (this.answered) return;
+      
+      this.answered = true;
+      this.isCorrect = option.value;
+      
+      if (this.isCorrect) {
+        this.score++;
+        this.feedbackMessage = "¡Correcto! ¡Muy bien!";
+      } else {
+        this.feedbackMessage = `Incorrecto. La respuesta correcta es: ${
+          this.currentQuestions[this.currentQuestion].options.find(opt => opt.value).text
+        }`;
+      }
+
+      this.answers[this.currentQuestion] = {
+        selected: option.text,
+        correct: option.value,
+        correct_answer: this.currentQuestions[this.currentQuestion].options.find(opt => opt.value).text
+      };
     },
     nextQuestion() {
-      if (this.currentQuestion < this.questions.length - 1) {
+      if (this.currentQuestion < this.currentQuestions.length - 1) {
         this.currentQuestion++;
+        this.answered = false;
+        this.feedbackMessage = '';
       }
     },
     prevQuestion() {
       if (this.currentQuestion > 0) {
         this.currentQuestion--;
+        this.answered = this.answers[this.currentQuestion] !== undefined;
+        this.feedbackMessage = '';
       }
     },
     finishQuiz() {
       this.isQuizFinished = true;
-      this.grade = Math.ceil((this.score / this.questions.length) * 5);
+      this.grade = Math.ceil((this.score / this.currentQuestions.length) * 5);
     },
     resetQuiz() {
       this.currentQuestion = 0;
       this.score = 0;
       this.grade = 0;
       this.isQuizFinished = false;
-      this.userAnswers = [];
-      this.feedback = [];
-      this.feedbackMessages = [];
+      this.answered = false;
+      this.feedbackMessage = '';
+      this.answers = [];
     },
-  },
+    resetCategory() {
+      this.categorySelected = false;
+      this.selectedCategory = null;
+      this.resetQuiz();
+    }
+  }
 };
 </script>
 
 <style scoped>
-.text-center {
-  text-align: center;
+.category-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-.rounded-lg {
-  border-radius: 12px !important;
+.category-card:hover {
+  transform: translateY(-5px);
 }
-.text-success {
-  color: #4caf50 !important;
-}
-.text-error {
-  color: #f44336 !important;
+.v-list-item {
+  margin-bottom: 16px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
 }
 .v-btn {
   text-transform: none !important;
-  font-size: 1.1rem !important;
 }
 </style>
