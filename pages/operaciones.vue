@@ -35,12 +35,12 @@
                     <div class="activities-preview">
                         <h3>Actividades disponibles:</h3>
                         <div class="preview-cards">
-                            <div class="preview-card">
+                            <div class="preview-card" @click="mostrarAlerta('https://youtu.be/oF-rZLIShC8?si=NkaJE0FMoQpbWv6C')">
                                 <i class="fas fa-plus-circle"></i>
                                 <h4>Tabla de Suma</h4>
                                 <p>Practica sumas con diferentes números</p>
                             </div>
-                            <div class="preview-card">
+                            <div class="preview-card" @click="mostrarAlerta('https://www.youtube.com/watch?v=L6NOkLq6kHk')">
                                 <i class="fas fa-minus-circle"></i>
                                 <h4>Tabla de Resta</h4>
                                 <p>Mejora tu habilidad con las restas</p>

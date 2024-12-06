@@ -50,11 +50,18 @@
                   <i class="fas fa-info-circle"></i>
               </div>
               <h3>¿Cómo empezar?</h3>
-              <ul class="info-list">
-                  <li>Selecciona cualquier actividad que te interese</li>
-                  <li>Practica a tu propio ritmo</li>
-                  <li>Gana puntos y mejora tus habilidades</li>
-              </ul>
+              <div class="content-wrapper">
+                  <ul class="info-list">
+                      <li>Selecciona cualquier actividad que te interese</li>
+                      <li>Practica a tu propio ritmo</li>
+                      <li>Gana puntos y mejora tus habilidades</li>
+                  </ul>
+                  <img 
+                      src="https://i.pinimg.com/originals/67/d2/9a/67d29ada51b239e7b9c4ef15ab8f7df3.gif" 
+                      alt="Instrucciones animadas" 
+                      class="info-gif"
+                  />
+              </div>
           </div>
       </div>
   </div>
@@ -108,19 +115,20 @@
   text-align: center;
   margin-bottom: 40px;
   padding: 20px;
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  background: linear-gradient(135deg, #1b992c 0%, #fdff74 100%); /* Cambiado a tonos amarillos */
   color: white;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-section h1 {
-  color: white;
+  color: white; /* Ya estaba en blanco, pero lo mantenemos explícito */
   margin-bottom: 15px;
   font-size: 2.2rem;
 }
 
 .welcome-text {
+  color: white; /* Añadido para asegurar que el texto también sea blanco */
   font-size: 1.1rem;
   line-height: 1.6;
   max-width: 800px;
@@ -182,6 +190,22 @@
 .help-text {
   color: #666;
   font-size: 1rem;
+}
+
+.content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.info-gif {
+    width: 350px;
+    height: auto;
+}
+
+.info-list {
+    flex: 1;
 }
 </style>
 
