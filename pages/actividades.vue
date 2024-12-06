@@ -1,5 +1,15 @@
 <template>
   <v-container>
+    <!-- Botón superior -->
+    <v-btn
+      color="primary"
+      class="mb-4"
+      @click="$router.push('/dashboard')"
+    >
+      <v-icon left>mdi-arrow-left</v-icon>
+      Volver al inicio
+    </v-btn>
+
     <!-- Selección de categoría -->
     <template v-if="!categorySelected">
       <v-card class="pa-6 rounded-lg elevation-3">
@@ -111,6 +121,17 @@
             <v-icon right>mdi-check-circle</v-icon>
           </v-btn>
         </v-row>
+
+        <!-- Botón para cancelar al final del quiz -->
+        <v-row justify="center" class="mt-6">
+          <v-btn
+            color="error"
+            @click="$router.push('/dashboard')"
+          >
+            <v-icon left>mdi-close</v-icon>
+            Cancelar cuestionario
+          </v-btn>
+        </v-row>
       </v-card>
     </template>
 
@@ -174,6 +195,14 @@
         </v-card>
 
         <v-row justify="center" class="mt-6">
+          <v-btn
+            color="primary"
+            class="mr-4"
+            @click="$router.push('/dashboard')"
+          >
+            <v-icon left>mdi-home</v-icon>
+            Volver al inicio
+          </v-btn>
           <v-btn
             color="primary"
             class="mr-4"
