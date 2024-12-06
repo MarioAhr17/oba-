@@ -51,7 +51,7 @@
         ></v-progress-linear>
 
         <v-card outlined class="mb-4 rounded-lg elevation-1">
-          <v-card-title class="text-h6 pa-4">
+          <v-card-title class="text-h6 pa-4 question-text">
             Pregunta {{ currentQuestion + 1 }} de {{ currentQuestions.length }}: {{ currentQuestions[currentQuestion].text }}
           </v-card-title>
 
@@ -468,5 +468,18 @@ export default {
 }
 .v-btn {
   text-transform: none !important;
+}
+
+.question-text {
+  white-space: normal !important;
+  line-height: 1.5;
+  word-wrap: break-word;
+  height: auto !important;
+  min-height: 64px;
+}
+
+.v-card-title {
+  display: block !important;
+  padding: 16px !important;
 }
 </style>
