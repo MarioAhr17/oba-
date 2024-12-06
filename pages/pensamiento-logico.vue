@@ -147,7 +147,7 @@
 
             <div class="footer-section">
                 <button @click="volverDashboard" class="back-button">
-                    <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                    <i class="fas fa-arrow-left"></i> Volver al Inicio
                 </button>
             </div>
         </div>

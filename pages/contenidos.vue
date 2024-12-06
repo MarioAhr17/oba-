@@ -3,33 +3,67 @@
       <h1 class="main-title">Contenidos del Curso</h1>
       
       <div class="content-container">
-          
           <div class="unit-section">
               <h2 class="unit-title">Aprende y explora:Matemáticas y Pensamiento Lógico </h2>
               <div class="unit-content">
                   <h3 class="topic-title">Operaciones Básicas</h3>
+                  
                   <ul class="topic-list">
-                      
                       <li>Suma, resta, multiplicación y división.</li>
-                      <li>Problemas prácticos interactivos.</li>
                   </ul>
+<div class="video-container">
+                      <iframe 
+                          src="https://www.youtube.com/embed/4pB_ki1EmNc"
+                          title="Operaciones Básicas"
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen>
+                      </iframe>
+                  </div>
 
                   <h3 class="topic-title">Pensamiento Lógico</h3>
                   <ul class="topic-list">
                       <li>Patrones, secuencias, y razonamiento lógico.</li>
-                      <li>Juegos y acertijos.</li>
                   </ul>
+<div class="video-container">
+                      <iframe 
+                          src="https://www.youtube.com/embed/TlxG2HGcQRA"
+                          title="Pensamiento Lógico"
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen>
+                      </iframe>
+                  </div>
+
                   <h3 class="topic-title">Geometría Básica</h3>
                   <ul class="topic-list">
                       <li>Figuras, perímetros y tipos de ángulos</li>
-                      <li>Actividades visuales.</li>
-
-                  </ul><h3 class="topic-title">Fracciones</h3>
-                  <ul class="topic-list">
-
-                      <li>Conceptos básicos, representación y operaciones simples</li>
-                      <li>Ejemplos cotidianos</li>
                   </ul>
+                  <div class="video-container">
+                      <iframe 
+                          src="https://www.youtube.com/embed/wYNvY_bOGdc"
+                          title="Geometría Básica"
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen>
+                      </iframe>
+                  </div>
+                  
+
+                  <h3 class="topic-title">Fracciones</h3>
+                  <ul class="topic-list">
+                      <li>Conceptos básicos, representación y operaciones simples</li>
+                  </ul>
+                  <div class="video-container">
+                      <iframe 
+                          src="https://www.youtube.com/embed/c9cTIjBqFTw"
+                          title="Fracciones"
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen>
+                      </iframe>
+                  </div>
+                  
               </div>
           </div>
       </div>
@@ -124,5 +158,23 @@ methods: {
 
 .back-button:hover {
   background-color: #45a049;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 40%;
+    height: 0;
+    overflow: hidden;
+    margin: 15px auto;
+    max-width: 500px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
 }
 </style>
